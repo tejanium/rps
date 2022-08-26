@@ -15,7 +15,7 @@ ARG COMMON_SCRIPT_SOURCE="https://raw.githubusercontent.com/microsoft/vscode-dev
 ARG COMMON_SCRIPT_SHA="ab4609258940b032d02ed08d4c776e9e66e1a2a21dd2f3313a8fc1c4fee607d0"
 
 # Optional Settings for Phoenix
-ARG PHOENIX_VERSION="1.6.7"
+ARG PHOENIX_VERSION="1.6.11"
 
 ARG NODE_SCRIPT_SOURCE="https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/script-library/node-debian.sh"
 ARG NODE_SCRIPT_SHA="dev-mode"
