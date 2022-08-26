@@ -1,4 +1,4 @@
-defmodule RpsWeb.PageController do
+defmodule RpsWeb.RandomMatchesController do
   use RpsWeb, :controller
 
   def index(conn, _params) do
