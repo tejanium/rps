@@ -1,0 +1,28 @@
+<div class="mb-2 p-2">
+  <div class="bg-blue-600 text-white">You are player <%= @player_id %> vs <%= @opponent_id %></div>
+</div>
+
+<div class="text-center">
+  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="rock" title="rock">
+    🗿
+  </button>
+  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="paper" title="paper">
+    📃
+  </button>
+  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="scissor" title="scissor">
+    ✂️
+  </button>
+</div>
+
+<%= if assigns[:turns] do %>
+  <ol reversed>
+    <%= for {turn_number, %{moves: moves}} <- @turns do  %>
+      <li>
+        Turn <%= turn_number %>
+        <%= for {player_id, pick} <- moves do %>
+          <%= player_id %> picked <%= pick %>
+        <% end %>
+      </li>
+    <% end %>
+  </ol>
+<% end %>

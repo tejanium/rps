@@ -22,63 +22,64 @@ defmodule RpsWeb.Features.RandomMatchesTest do
     # Preparing the game
     user_1
     |> visit(@page)
+    |> Wallaby.Browser.page_source() |> IO.inspect()
     |> assert_text("Searching for opponent... Please wait!")
 
-    user_2
-    |> visit(@page)
-    |> assert_has_all_buttons()
-    |> assert_text("playing against")
+    # user_2
+    # |> visit(@page)
+    # |> assert_has_all_buttons()
+    # |> assert_text("playing against")
 
-    user_1
-    |> assert_has_all_buttons()
-    |> assert_text("playing against")
+    # user_1
+    # |> assert_has_all_buttons()
+    # |> assert_text("playing against")
 
-    # Start playing
-    user_1
-    |> click(button("rock"))
-    |> assert_text("Waiting for opponent to pick their move...")
+    # # Start playing
+    # user_1
+    # |> click(button("rock"))
+    # |> assert_text("Waiting for opponent to pick their move...")
 
-    user_2
-    |> assert_text("Opponent has picked their move.")
+    # user_2
+    # |> assert_text("Opponent has picked their move.")
 
-    user_2
-    |> click(button("scissor"))
+    # user_2
+    # |> click(button("scissor"))
 
-    assert_text(user_1, "You win!")
-    assert_text(user_2, "You lose!")
+    # assert_text(user_1, "You win!")
+    # assert_text(user_2, "You lose!")
 
-    # New game
-    user_1
-    |> assert_has_all_buttons()
+    # # New game
+    # user_1
+    # |> assert_has_all_buttons()
 
-    user_2
-    |> assert_has_all_buttons()
+    # user_2
+    # |> assert_has_all_buttons()
 
-    assert_text(user_1, "Win: 1, Lose: 0")
-    assert_text(user_2, "Win: 0, Lose: 1")
+    # assert_text(user_1, "Win: 1, Lose: 0")
+    # assert_text(user_2, "Win: 0, Lose: 1")
   end
 
-  @sessions 2
-  feature "One user disconnected", %{sessions: [user_1, user_2]} do
-    on_exit(fn ->
-      Wallaby.end_session(user_1)
-      Wallaby.end_session(user_2)
-    end)
+  # @sessions 2
+  # feature "One user disconnected", %{sessions: [user_1, user_2]} do
+  #   on_exit(fn ->
+  #     Wallaby.end_session(user_1)
+  #     Wallaby.end_session(user_2)
+  #   end)
 
-    # Preparing the game
-    user_1
-    |> visit(@page)
+  #   # Preparing the game
+  #   user_1
+  #   |> visit(@page)
 
-    user_2
-    |> visit(@page)
-    |> assert_has_all_buttons()
+  #   user_2
+  #   |> visit(@page)
+  #   |> assert_has_all_buttons()
 
-    # One user leaving the page
-    user_1
-    |> assert_has_all_buttons()
-    |> visit("/")
+  #   # One user leaving the page
+  #   user_1
+  #   |> assert_has_all_buttons()
+  #   |> visit("/")
 
-    user_2
-    |> assert_text("The opponent has been disconnected, please refresh to start new game.")
-  end
+  #   user_2
+  #   |> assert_text("The opponent has been disconnected, please refresh to start new game.")
+  # end
 end
