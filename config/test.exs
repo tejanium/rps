@@ -5,7 +5,7 @@ import Config
 config :rps, RpsWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "BG9WSOq8vj7BWhXI6M+hoPmCLIZ+RmdpGuRp3ussjQr72I86M9tQnJpLLEcakYCw",
-  server: false
+  server: true
 
 # Print only warnings and errors during test
 config :logger, level: :warn
