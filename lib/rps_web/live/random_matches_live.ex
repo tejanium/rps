@@ -17,25 +17,22 @@ defmodule RpsWeb.RandomMatchesLive do
   end
 
   def mount(%{"player_id" => player_id}, _session, socket) do
-    start_session(socket, player_id)
-  end
-
-  def mount(_params, _session, socket) do
-    start_session(socket, generate_player_id())
-  end
-
-  defp generate_player_id do
-    1
+    if connected?(socket) do
+      start_session(socket, player_id)
+    else
+      {:ok, assign(socket, player_id: player_id)}
+    end
   end
 
   defp start_session(socket, player_id) do
-    {:ok, pid} = Rps.GameQueue.find_game(player_id)
-
-    if connected?(socket) do
-      Rps.GameBroadcaster.subscribe(pid)
+    case Rps.GameQueue.find_game(player_id) do
+      {:ok, pid, opponent_id} ->
+        Rps.GameBroadcaster.subscribe(pid)
+        {:ok, assign(socket, pid: pid, player_id: player_id, opponent_id: opponent_id)}
+      {:ok, pid} ->
+        Rps.GameBroadcaster.subscribe(pid)
+        {:ok, assign(socket, pid: pid, player_id: player_id)}
     end
-
-    {:ok, assign(socket, pid: pid, player_id: player_id)}
   end
 
   def handle_info({:update, %{home_player_id: home_player_id, away_player_id: away_player_id}}, socket) do

@@ -30,9 +30,9 @@ defmodule Rps.GameQueue do
     {:reply, {:ok, pid}, %{pid: pid, player_id: player_id}}
   end
 
-  def handle_call({:find_game, player_id}, _from, %{pid: pid, player_id: _}) do
+  def handle_call({:find_game, player_id}, _from, %{pid: pid, player_id: opponent_id}) do
     Rps.Game.add_opponent(pid, player_id)
 
-    {:reply, {:ok, pid}, %{pid: nil, player_id: nil}}
+    {:reply, {:ok, pid, opponent_id}, %{pid: nil, player_id: nil}}
   end
 end
