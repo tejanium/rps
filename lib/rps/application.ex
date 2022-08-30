@@ -13,9 +13,9 @@ defmodule Rps.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Rps.PubSub},
       # Start the Endpoint (http/https)
-      RpsWeb.Endpoint
+      RpsWeb.Endpoint,
       # Start a worker by calling: Rps.Worker.start_link(arg)
-      # {Rps.Worker, arg}
+      Rps.GameQueue
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
