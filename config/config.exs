@@ -12,7 +12,7 @@ config :rps, RpsWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: RpsWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Rps.PubSub,
-  live_view: [signing_salt: "kqnv7TTV"]
+  live_view: [signing_salt: System.get_env("LIVE_VIEW_SALT") || "not so secret"]
 
 # Configure esbuild (the version is required)
 config :esbuild,

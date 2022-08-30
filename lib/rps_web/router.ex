@@ -17,7 +17,7 @@ defmodule RpsWeb.Router do
   scope "/", RpsWeb do
     pipe_through :browser
 
-    get "/", RandomMatchesController, :index
+    live "/", RandomMatchesLive
   end
 
   # Other scopes may use custom stacks.

@@ -1,4 +1,4 @@
-defmodule RpsWeb.Features.RandomGameTest do
+defmodule RpsWeb.Features.RandomMatchesTest do
   use ExUnit.Case, async: true
   use Wallaby.Feature
 
