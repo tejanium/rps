@@ -32,3 +32,5 @@ rps-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Wallabys screenshots
+/screenshots/
