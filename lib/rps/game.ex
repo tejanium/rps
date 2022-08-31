@@ -47,16 +47,16 @@ defmodule Rps.Game do
       case get_in(state, [:turns, current_turn, :result]) do
         :wait ->
           state
-          |> update_state(current_turn, player_id, move, :done)
+          |> update_move(current_turn, player_id, move, :done)
           |> update_winner(current_turn)
         _ ->
-          update_state(state, current_turn + 1, player_id, move, :wait)
+          update_move(state, current_turn + 1, player_id, move, :wait)
       end
 
     {:reply, {:ok, new_state}, new_state}
   end
 
-  defp update_state(state, turn_size, player_id, move, status) do
+  defp update_move(state, turn_size, player_id, move, status) do
     state
     |> update_map([:turns, turn_size, :moves, player_id], move)
     |> update_map([:turns, turn_size, :result], status)
