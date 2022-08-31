@@ -2,26 +2,36 @@
   <div class="bg-blue-600 text-white">You are player <%= @player_id %> playing against <%= @opponent_id %></div>
 </div>
 
-<div class="text-center">
-  <%= if has_moved?(assigns[:turns], @player_id) && has_not_moved?(assigns[:turns], @opponent_id) do %>
-    Waiting for opponent to pick their move...
-  <% else %>
-    <div>
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="rock" title="rock">
-        🪨
-      </button>
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="paper" title="paper">
-        📃
-      </button>
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="scissor" title="scissor">
-        ✂️
-      </button>
-    </div>
-  <% end %>
+<div class="grid grid-cols-2 gap-4">
+  <div class="text-center">
+    <%= if has_moved?(assigns[:turns], @player_id) && has_not_moved?(assigns[:turns], @opponent_id) do %>
+      <div>
+        <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded text-6xl" disabled>
+          <%= picked(assigns[:turns], @player_id) %>
+        </button>
+      </div>
+    <% else %>
+      <div>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="rock" title="rock">
+          🪨
+        </button>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="paper" title="paper">
+          📃
+        </button>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="scissor" title="scissor">
+          ✂️
+        </button>
+      </div>
+    <% end %>
+  </div>
 
-  <%= if has_not_moved?(assigns[:turns], @player_id) && has_moved?(assigns[:turns], @opponent_id) do %>
-    Opponent has picked their move.
-  <% end %>
+  <div class="text-center">
+    <%= if has_not_moved?(assigns[:turns], @player_id) && has_moved?(assigns[:turns], @opponent_id) do %>
+      Opponent has picked their move.
+    <% else %>
+      Opponent is picking...
+    <% end %>
+  </div>
 </div>
 
 <%= if assigns[:turns] do %>

@@ -33,6 +33,14 @@ defmodule RpsWeb.GameView do
     turns[map_size(turns)].moves[player_id] != nil
   end
 
+  def picked(turns, player_id) do
+    case turns[map_size(turns)].moves[player_id] do
+      :rock -> "🪨"
+      :paper -> "📃"
+      :scissor -> "✂️"
+    end
+  end
+
   def has_not_moved?(nil, _), do: true
   def has_not_moved?(turns, player_id), do: !has_moved?(turns, player_id)
 
