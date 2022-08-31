@@ -23,6 +23,12 @@
 <% end %>
 
 <%= if assigns[:turns] do %>
+  <h1 class="text-center mb-4 text-xl font-bold">
+    <%= humanize_standing(@player_id, @turns) %>
+  </h1>
+<% end %>
+
+<%= if assigns[:turns] do %>
   <ol reversed>
     <%= for {turn_number, %{moves: moves} = turn} <- @turns do  %>
       <li>
