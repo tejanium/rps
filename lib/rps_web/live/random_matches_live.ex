@@ -42,29 +42,18 @@ defmodule RpsWeb.RandomMatchesLive do
     end
   end
 
-  def handle_info(
-        {:opponent_added, %{away_player_id: away_player_id}},
-        socket
-      ) do
+  def handle_info({:opponent_added, %{away_player_id: away_player_id}}, socket) do
     {:noreply, assign(socket, opponent_id: away_player_id)}
   end
 
-  def handle_info(
-        {:moved, %{turns: turns}},
-        socket
-      ) do
+  def handle_info({:moved, %{turns: turns}}, socket) do
     {:noreply, assign(socket, turns: turns)}
   end
 
-  def handle_event(
-        "move",
-        %{"move" => move},
-        %{assigns: %{pid: pid, player_id: player_id}} = socket
-      ) do
-
+  def handle_event("move", %{"move" => move}, %{assigns: assigns} = socket) do
     move = String.to_atom(move)
 
-    {:ok, %{turns: turns}} = Rps.Game.move(pid, player_id, move)
+    {:ok, %{turns: turns}} = Rps.Game.move(assigns.pid, assigns.player_id, move)
 
     {:noreply, assign(socket, turns: turns)}
   end

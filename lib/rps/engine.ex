@@ -2,7 +2,7 @@ defmodule Rps.Engine do
   @rules [
     rock: 1,
     paper: 2,
-    scissor: 3
+    scissor:  3
   ]
 
   def calculate(_, nil), do: nil
