@@ -35,38 +35,38 @@ defmodule Rps.Game do
 
   @impl true
   def handle_call({:add_opponent, player_id}, _from, state) do
-    new_state = update_map(state, [:away_player_id], player_id)
+    new_state = update_state(state, [:away_player_id], player_id)
 
     {:reply, {:ok, new_state}, new_state}
   end
 
   def handle_call({:move, player_id, move}, _from, state) do
-    current_turn = map_size(state.turns)
+    turn_number = map_size(state.turns)
 
     new_state =
-      case get_in(state, [:turns, current_turn, :result]) do
+      case get_in(state, [:turns, turn_number, :result]) do
         :wait ->
           state
-          |> update_move(current_turn, player_id, move, :done)
-          |> update_winner(current_turn)
+          |> update_move(turn_number, player_id, move, :done)
+          |> update_winner(turn_number)
         _ ->
-          update_move(state, current_turn + 1, player_id, move, :wait)
+          update_move(state, turn_number + 1, player_id, move, :wait)
       end
 
     {:reply, {:ok, new_state}, new_state}
   end
 
-  defp update_move(state, turn_size, player_id, move, status) do
+  defp update_move(state, turn_number, player_id, move, status) do
     state
-    |> update_map([:turns, turn_size, :moves, player_id], move)
-    |> update_map([:turns, turn_size, :result], status)
+    |> update_state([:turns, turn_number, :moves, player_id], move)
+    |> update_state([:turns, turn_number, :result], status)
   end
 
-  def update_winner(state, current_turn) do
-    moves = state.turns[current_turn].moves
+  def update_winner(state, turn_number) do
+    moves = state.turns[turn_number].moves
     winner = calculate_winner(moves, state.home_player_id, state.away_player_id)
 
-    update_map(state, [:turns, current_turn, :winner], winner)
+    update_state(state, [:turns, turn_number, :winner], winner)
   end
 
   defp calculate_winner(moves, home_player_id, away_player_id) do
@@ -80,7 +80,7 @@ defmodule Rps.Game do
     end
   end
 
-  defp update_map(map, keys, value) do
+  defp update_state(map, keys, value) do
     put_in(map, Enum.map(keys, &Access.key(&1, %{})), value)
   end
 end
