@@ -12,7 +12,11 @@ defmodule RpsWeb.GameView do
       turn[:winner] && turn.winner == opponent_id
     end
 
-    "Win: #{win}, Lose: #{lose}"
+    draw = Enum.count turns, fn turn ->
+      turn[:winner] && turn.winner == :draw
+    end
+
+    "Win: #{win}, Lose: #{lose}, Draw: #{draw}"
   end
 
   def humanize_result(winner, player_id, opponent_id) do

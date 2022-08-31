@@ -63,8 +63,8 @@ defmodule RpsWeb.Features.RandomMatchesTest do
     assert_text(user_1, "Draw!")
     assert_text(user_2, "Draw!")
 
-    assert_text(user_1, "Win: 1, Lose: 0")
-    assert_text(user_2, "Win: 0, Lose: 1")
+    assert_text(user_1, "Win: 1, Lose: 0, Draw: 1")
+    assert_text(user_2, "Win: 0, Lose: 1, Draw: 1")
   end
 
   # @sessions 2
