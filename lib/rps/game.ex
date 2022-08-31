@@ -70,6 +70,7 @@ defmodule Rps.Game do
     winner = case Rps.Engine.calculate(home_player_move, away_player_move) do
       ^home_player_move -> state.home_player_id
       ^away_player_move -> state.away_player_id
+      :draw -> :draw
     end
     update_map(state, [:turns, current_turn, :winner], winner)
   end

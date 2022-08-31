@@ -24,7 +24,7 @@
 
 <%= if assigns[:turns] do %>
   <h1 class="text-center mb-4 text-xl font-bold">
-    <%= humanize_standing(@player_id, @turns) %>
+    <%= humanize_standing(@turns, @player_id, @opponent_id) %>
   </h1>
 <% end %>
 
@@ -38,11 +38,7 @@
         <% end %>
 
         <%= if turn[:winner] do %>
-          <%= if turn.winner == @player_id do %>
-            You win!
-          <% else %>
-            You lose!
-          <% end %>
+          <%= humanize_result(turn.winner, @player_id, @opponent_id) %>
         <% end %>
       </li>
     <% end %>

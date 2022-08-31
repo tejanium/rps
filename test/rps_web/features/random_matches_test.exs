@@ -54,6 +54,15 @@ defmodule RpsWeb.Features.RandomMatchesTest do
     user_2
     |> assert_has_all_buttons()
 
+    user_1
+    |> click(button("paper"))
+
+    user_2
+    |> click(button("paper"))
+
+    assert_text(user_1, "Draw!")
+    assert_text(user_2, "Draw!")
+
     assert_text(user_1, "Win: 1, Lose: 0")
     assert_text(user_2, "Win: 0, Lose: 1")
   end
