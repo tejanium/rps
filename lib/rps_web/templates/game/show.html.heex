@@ -3,18 +3,24 @@
 </div>
 
 <div class="text-center">
-  <%= if assigns[:turns] && @turns[map_size(@turns)].moves[@player_id] && @turns[map_size(@turns)].moves[@opponent_id] == nil do %>
+  <%= if has_moved?(assigns[:turns], @player_id) && has_not_moved?(assigns[:turns], @opponent_id) do %>
     Waiting for opponent to pick their move...
   <% else %>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="rock" title="rock">
-      🗿
-    </button>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="paper" title="paper">
-      📃
-    </button>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="scissor" title="scissor">
-      ✂️
-    </button>
+    <div>
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="rock" title="rock">
+        🗿
+      </button>
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="paper" title="paper">
+        📃
+      </button>
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="scissor" title="scissor">
+        ✂️
+      </button>
+    </div>
+  <% end %>
+
+  <%= if has_not_moved?(assigns[:turns], @player_id) && has_moved?(assigns[:turns], @opponent_id) do %>
+    Opponent has picked their move.
   <% end %>
 </div>
 
@@ -23,16 +29,18 @@
     <%= humanize_standing(@turns, @player_id, @opponent_id) %>
   </h1>
 
-  <%= if @turns[map_size(@turns)].moves[@opponent_id] && @turns[map_size(@turns)].moves[@player_id] == nil do %>
-    Opponent has picked their move.
-  <% end %>
-
-  <ol reversed>
+  <ol>
     <%= for {turn_number, %{moves: moves} = turn} <- @turns do  %>
       <li>
-        Turn <%= turn_number %>
+        Turn <%= turn_number %>:
         <%= for {player_id, pick} <- moves do %>
-          <%= player_id %> picked <%= pick %>
+          <%= humanize_player(player_id, @player_id) %> picked
+
+          <%= if turn[:winner] == nil && player_id != @player_id do %>
+            ???
+          <% else %>
+            <%= pick %>
+          <% end %>
         <% end %>
 
         <%= if turn[:winner] do %>

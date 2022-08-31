@@ -26,4 +26,20 @@ defmodule RpsWeb.GameView do
       :draw -> "Draw!"
     end
   end
+
+  @spec has_moved?(map, any) :: boolean
+  def has_moved?(nil, _), do: false
+  def has_moved?(turns, player_id) do
+    turns[map_size(turns)].moves[player_id] != nil
+  end
+
+  def has_not_moved?(nil, _), do: true
+  def has_not_moved?(turns, player_id), do: !has_moved?(turns, player_id)
+
+  def humanize_player(player_id, current_player_id) do
+    case player_id do
+      ^current_player_id -> "You"
+      _ -> "Opponent"
+    end
+  end
 end
