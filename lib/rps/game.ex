@@ -80,7 +80,7 @@ defmodule Rps.Game do
     end
   end
 
-  defp update_state(map, keys, value) do
-    put_in(map, Enum.map(keys, &Access.key(&1, %{})), value)
+  defp update_state(state, keys, value) do
+    put_in(state, Enum.map(keys, &Access.key(&1, %{})), value)
   end
 end
