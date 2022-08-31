@@ -46,8 +46,9 @@ defmodule Rps.Game do
     new_state =
       case get_in(state, [:turns, current_turn, :result]) do
         :wait ->
-          update_state(state, current_turn, player_id, move, :done)
-
+          state
+          |> update_state(current_turn, player_id, move, :done)
+          |> calculate_result(current_turn)
         _ ->
           update_state(state, current_turn + 1, player_id, move, :wait)
       end
@@ -59,6 +60,18 @@ defmodule Rps.Game do
     state
     |> update_map([:turns, turn_size, :moves, player_id], move)
     |> update_map([:turns, turn_size, :result], status)
+  end
+
+  def calculate_result(state, current_turn) do
+    moves = state.turns[current_turn].moves
+    home_player_move = moves[state.home_player_id]
+    away_player_move = moves[state.away_player_id]
+
+    winner = case Rps.Engine.calculate(home_player_move, away_player_move) do
+      ^home_player_move -> state.home_player_id
+      ^away_player_move -> state.away_player_id
+    end
+    update_map(state, [:turns, current_turn, :winner], winner)
   end
 
   defp update_map(map, keys, value) do

@@ -24,11 +24,19 @@
 
 <%= if assigns[:turns] do %>
   <ol reversed>
-    <%= for {turn_number, %{moves: moves}} <- @turns do  %>
+    <%= for {turn_number, %{moves: moves} = turn} <- @turns do  %>
       <li>
         Turn <%= turn_number %>
         <%= for {player_id, pick} <- moves do %>
           <%= player_id %> picked <%= pick %>
+        <% end %>
+
+        <%= if turn[:winner] do %>
+          <%= if turn.winner == @player_id do %>
+            You win!
+          <% else %>
+            You lose!
+          <% end %>
         <% end %>
       </li>
     <% end %>
