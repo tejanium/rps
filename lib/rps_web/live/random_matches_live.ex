@@ -66,8 +66,6 @@ defmodule RpsWeb.RandomMatchesLive do
 
     {:ok, %{turns: turns}} = Rps.Game.move(pid, player_id, move)
 
-    IO.puts inspect turns
-
     {:noreply, assign(socket, turns: turns)}
   end
 end
