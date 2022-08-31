@@ -18,6 +18,10 @@
   </div>
 <% end %>
 
+<%= if assigns[:turns] && @turns[map_size(@turns)].moves[@opponent_id] && @turns[map_size(@turns)].moves[@player_id] == nil do %>
+  Opponent has picked their move.
+<% end %>
+
 <%= if assigns[:turns] do %>
   <ol reversed>
     <%= for {turn_number, %{moves: moves}} <- @turns do  %>

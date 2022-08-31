@@ -38,8 +38,8 @@ defmodule RpsWeb.Features.RandomMatchesTest do
     |> click(button("rock"))
     |> assert_text("Waiting for opponent to pick their move...")
 
-    # user_2
-    # |> assert_text("Opponent has picked their move.")
+    user_2
+    |> assert_text("Opponent has picked their move.")
 
     user_2
     |> click(button("scissor"))
