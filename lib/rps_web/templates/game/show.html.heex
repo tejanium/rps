@@ -2,10 +2,10 @@
   <div class="bg-blue-600 text-white">You are player <%= @player_id %> playing against <%= @opponent_id %></div>
 </div>
 
-<%= if assigns[:turns] && @turns[map_size(@turns)].moves[@player_id] && @turns[map_size(@turns)].moves[@opponent_id] == nil do %>
-  Waiting for opponent to pick their move...
-<% else %>
-  <div class="text-center">
+<div class="text-center">
+  <%= if assigns[:turns] && @turns[map_size(@turns)].moves[@player_id] && @turns[map_size(@turns)].moves[@opponent_id] == nil do %>
+    Waiting for opponent to pick their move...
+  <% else %>
     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="rock" title="rock">
       🗿
     </button>
@@ -15,20 +15,18 @@
     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="scissor" title="scissor">
       ✂️
     </button>
-  </div>
-<% end %>
-
-<%= if assigns[:turns] && @turns[map_size(@turns)].moves[@opponent_id] && @turns[map_size(@turns)].moves[@player_id] == nil do %>
-  Opponent has picked their move.
-<% end %>
+  <% end %>
+</div>
 
 <%= if assigns[:turns] do %>
   <h1 class="text-center mb-4 text-xl font-bold">
     <%= humanize_standing(@turns, @player_id, @opponent_id) %>
   </h1>
-<% end %>
 
-<%= if assigns[:turns] do %>
+  <%= if @turns[map_size(@turns)].moves[@opponent_id] && @turns[map_size(@turns)].moves[@player_id] == nil do %>
+    Opponent has picked their move.
+  <% end %>
+
   <ol reversed>
     <%= for {turn_number, %{moves: moves} = turn} <- @turns do  %>
       <li>
