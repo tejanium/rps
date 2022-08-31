@@ -36,7 +36,7 @@ defmodule RpsWeb.Features.RandomMatchesTest do
     # Start playing
     user_1
     |> click(button("rock"))
-    |> assert_text("Waiting for opponent to pick their move...")
+    |> assert_text("Opponent is picking...")
 
     user_2
     |> assert_text("Opponent has picked their move.")
