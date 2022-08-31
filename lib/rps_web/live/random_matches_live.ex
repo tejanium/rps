@@ -15,18 +15,18 @@ defmodule RpsWeb.RandomMatchesLive do
   end
 
   def mount(%{"player_id" => player_id}, _session, socket) do
-    if connected?(socket) do
-      start_session(socket, player_id)
-    else
-      {:ok, assign(socket, player_id: player_id)}
-    end
+    start_if_connected(socket, player_id)
   end
 
   def mount(_params, _session, socket) do
+    start_if_connected(socket, socket.id)
+  end
+
+  defp start_if_connected(socket, player_id) do
     if connected?(socket) do
       start_session(socket, socket.id)
     else
-      {:ok, assign(socket, player_id: socket.id)}
+      {:ok, assign(socket, player_id: player_id)}
     end
   end
 
