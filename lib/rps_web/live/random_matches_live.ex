@@ -24,7 +24,7 @@ defmodule RpsWeb.RandomMatchesLive do
 
   defp start_if_connected(socket, player_id) do
     if connected?(socket) do
-      start_session(socket, socket.id)
+      start_session(socket, player_id)
     else
       {:ok, assign(socket, player_id: player_id)}
     end
