@@ -57,7 +57,7 @@ defmodule Rps.MixProject do
   defp aliases do
     [
       setup: ["deps.get"],
-      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"],
+      "assets.deploy": ["esbuild default --minify", "phx.digest"],
       test: [
         "esbuild default",
         "test"
