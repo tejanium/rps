@@ -8,7 +8,9 @@ defmodule RpsWeb.RandomMatchesLive do
 
   def render(assigns) do
     ~H"""
-    Searching for opponent... Please wait!
+    <div class="h-screen flex items-center justify-center">
+      Searching for opponent... Please wait!
+    </div>
     """
   end
 
