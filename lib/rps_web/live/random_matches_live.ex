@@ -9,8 +9,6 @@ defmodule RpsWeb.RandomMatchesLive do
   def render(assigns) do
     ~H"""
     Searching for opponent... Please wait!
-    <br>
-    You are player <%= @player_id %>
     """
   end
 

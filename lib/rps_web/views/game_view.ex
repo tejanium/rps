@@ -1,7 +1,8 @@
 defmodule RpsWeb.GameView do
   use RpsWeb, :view
 
-  def humanize_standing(turns, player_id, opponent_id) do
+    def humanize_standing(nil, _, _), do: "Win: 0, Lose: 0, Draw: 0"
+    def humanize_standing(turns, player_id, opponent_id) do
     turns = Map.values(turns)
 
     win = Enum.count turns, fn turn ->
@@ -43,11 +44,4 @@ defmodule RpsWeb.GameView do
 
   def has_not_moved?(nil, _), do: true
   def has_not_moved?(turns, player_id), do: !has_moved?(turns, player_id)
-
-  def humanize_player(player_id, current_player_id) do
-    case player_id do
-      ^current_player_id -> "You"
-      _ -> "Opponent"
-    end
-  end
 end

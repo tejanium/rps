@@ -1,88 +1,63 @@
-<div class="mb-2 p-2">
-  <div class="bg-blue-600 text-white">You are player <%= @player_id %> playing against <%= @opponent_id %></div>
-</div>
+<h1 class="text-center m-10 text-xl font-bold">
+  <%= humanize_standing(assigns[:turns], @player_id, @opponent_id) %>
+</h1>
 
 <%= if assigns[:turns] && @turns[map_size(@turns)].result == :done do %>
-  <div id="previous-result" phx-hook="DelayedHide" class="grid grid-cols-3 gap-4">
-    <div class="text-center space-y-2">
-      <h1 class="text-2xl font-bold">You</h1>
-      <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded text-6xl" disabled>
-        <%= picked(assigns[:turns], @player_id) %>
-      </button>
-    </div>
-
-    <div class="text-center space-y-2">
-      <h1 class="text-5xl font-bold align-middle"><%= humanize_result(@turns[map_size(@turns)].winner, @player_id, @opponent_id) %></h1>
-    </div>
-
-    <div class="text-center space-y-2">
-      <h1 class="text-2xl font-bold">Opponent</h1>
+  <section id="previous-result" phx-hook="DelayedHide" class="space-y-16">
+    <section class="h-40 text-center space-y-10">
+      <h1 class="text-3xl font-bold">Opponent</h1>
       <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded text-6xl" disabled>
         <%= picked(assigns[:turns], @opponent_id) %>
       </button>
-    </div>
-  </div>
+    </section>
+
+    <section class="h-40 text-center space-y-10">
+      <h1 class="text-5xl font-bold align-middle inline-block"><%= humanize_result(@turns[map_size(@turns)].winner, @player_id, @opponent_id) %></h1>
+    </section>
+
+    <section class="h-40 text-center space-y-10 sticky bottom-0">
+      <h1 class="text-3xl font-bold">You</h1>
+      <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded text-6xl" disabled>
+        <%= picked(assigns[:turns], @player_id) %>
+      </button>
+    </section>
+  </section>
 <% end %>
 
-<div id="current-game">
-  <div class="grid grid-cols-3 gap-4">
-    <div class="text-center space-y-2">
-      <h1 class="text-2xl font-bold">You</h1>
-      <%= if has_moved?(assigns[:turns], @player_id) && has_not_moved?(assigns[:turns], @opponent_id) do %>
-        <div>
-          <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded text-6xl" disabled>
-            <%= picked(assigns[:turns], @player_id) %>
-          </button>
-        </div>
-      <% else %>
-        <div>
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="rock" title="rock">
-            🪨
-          </button>
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="paper" title="paper">
-            📃
-          </button>
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="scissor" title="scissor">
-            ✂️
-          </button>
-        </div>
-      <% end %>
-    </div>
-    <div></div>
-    <div class="text-center space-y-2">
-      <h1 class="text-2xl font-bold">Opponent</h1>
+<section id="current-game" class="space-y-16">
+  <section class="h-40 text-center space-y-10">
+    <h1 class="text-3xl font-bold">Opponent</h1>
+    <div>
       <%= if has_not_moved?(assigns[:turns], @player_id) && has_moved?(assigns[:turns], @opponent_id) do %>
         Opponent has picked their move.
       <% else %>
         Opponent is picking...
       <% end %>
     </div>
-  </div>
-</div>
+  </section>
 
-<%= if assigns[:turns] do %>
-  <h1 class="text-center mb-4 text-xl font-bold">
-    <%= humanize_standing(@turns, @player_id, @opponent_id) %>
-  </h1>
+  <section class="h-40"></section>
 
-  <ol>
-    <%= for {turn_number, %{moves: moves} = turn} <- @turns do  %>
-      <li>
-        Turn <%= turn_number %>:
-        <%= for {player_id, pick} <- moves do %>
-          <%= humanize_player(player_id, @player_id) %> picked
-
-          <%= if turn[:winner] == nil && player_id != @player_id do %>
-            ???
-          <% else %>
-            <%= pick %>
-          <% end %>
-        <% end %>
-
-        <%= if turn[:winner] do %>
-          <%= humanize_result(turn.winner, @player_id, @opponent_id) %>
-        <% end %>
-      </li>
+  <section class="h-40 text-center space-y-10 sticky bottom-0">
+    <h1 class="text-3xl font-bold">You</h1>
+    <%= if has_moved?(assigns[:turns], @player_id) && has_not_moved?(assigns[:turns], @opponent_id) do %>
+      <div>
+        <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded text-6xl" disabled>
+          <%= picked(assigns[:turns], @player_id) %>
+        </button>
+      </div>
+    <% else %>
+      <div>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="rock" title="rock">
+          🪨
+        </button>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="paper" title="paper">
+          📃
+        </button>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="scissor" title="scissor">
+          ✂️
+        </button>
+      </div>
     <% end %>
-  </ol>
-<% end %>
+  </section>
+</section>
