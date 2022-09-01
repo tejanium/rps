@@ -34,11 +34,15 @@ defmodule RpsWeb.RandomMatchesLive do
     case Rps.GameQueue.find_game(player_id) do
       {:ok, pid, opponent_id} ->
         Rps.GameBroadcaster.subscribe(pid)
-        {:ok, assign(socket, pid: pid, player_id: player_id, opponent_id: opponent_id)}
+        players = RpsWeb.Presence.track_presence(socket, pid)
+
+        {:ok,
+         assign(socket, pid: pid, players: players, player_id: player_id, opponent_id: opponent_id)}
 
       {:ok, pid} ->
         Rps.GameBroadcaster.subscribe(pid)
-        {:ok, assign(socket, pid: pid, player_id: player_id)}
+        players = RpsWeb.Presence.track_presence(socket, pid)
+        {:ok, assign(socket, pid: pid, players: players, player_id: player_id)}
     end
   end
 
@@ -48,6 +52,10 @@ defmodule RpsWeb.RandomMatchesLive do
 
   def handle_info({:moved, %{turns: turns}}, socket) do
     {:noreply, assign(socket, turns: turns)}
+  end
+
+  def handle_info(%{event: "presence_diff", payload: diff}, %{assigns: assigns} = socket) do
+    {:noreply, assign(socket, players: RpsWeb.Presence.handle_diff(assigns.players, diff))}
   end
 
   def handle_event("move", %{"move" => move}, %{assigns: assigns} = socket) do

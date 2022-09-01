@@ -15,7 +15,8 @@ defmodule Rps.Application do
       # Start the Endpoint (http/https)
       RpsWeb.Endpoint,
       # Start a worker by calling: Rps.Worker.start_link(arg)
-      Rps.GameQueue
+      Rps.GameQueue,
+      RpsWeb.Presence
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

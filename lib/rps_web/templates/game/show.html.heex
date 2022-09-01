@@ -29,10 +29,14 @@
     <section class="h-40 space-y-10">
       <h1 class="text-3xl font-bold">Opponent</h1>
       <div>
-        <%= if has_not_moved?(assigns[:turns], @player_id) && has_moved?(assigns[:turns], @opponent_id) do %>
-          Opponent has picked their move.
+        <%= if online?(@players, @opponent_id) do %>
+          <%= if has_not_moved?(assigns[:turns], @player_id) && has_moved?(assigns[:turns], @opponent_id) do %>
+            Opponent has picked their move.
+          <% else %>
+            Opponent is picking...
+          <% end %>
         <% else %>
-          Opponent is picking...
+            Opponent is offline!
         <% end %>
       </div>
     </section>

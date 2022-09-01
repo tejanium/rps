@@ -1,8 +1,6 @@
 defmodule Rps.GameBroadcaster do
-  alias Phoenix.PubSub
-
   def broadcast(pid, subject, data) do
-    PubSub.broadcast(Rps.PubSub, channel_name(pid), {subject, data})
+    Phoenix.PubSub.broadcast(Rps.PubSub, channel_name(pid), {subject, data})
   end
 
   def subscribe(pid) do
