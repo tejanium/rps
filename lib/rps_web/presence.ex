@@ -10,7 +10,7 @@ defmodule RpsWeb.Presence do
   end
 
   def track_presence(socket, pid) do
-    topic = "players:#{inspect(pid)}"
+    topic = topic(pid)
 
     Phoenix.PubSub.subscribe(Rps.PubSub, topic)
 
@@ -31,5 +31,17 @@ defmodule RpsWeb.Presence do
     Enum.reduce(leaves, players, fn {user, _}, acc ->
       Map.delete(acc, user)
     end)
+  end
+
+  def topic(pid) do
+    "players:#{inspect(pid)}"
+  end
+
+  def present?(pid, player_id) do
+    pid
+    |> topic()
+    |> RpsWeb.Presence.list()
+    |> Map.keys()
+    |> Enum.member?(player_id)
   end
 end

@@ -21,9 +21,7 @@ defmodule Rps.GameQueue do
 
   @impl true
   def handle_call({:find_game, player_id}, _from, %{pid: nil, player_id: nil}) do
-    {:ok, pid} = Rps.Game.start_link(player_id)
-
-    {:reply, {:ok, pid}, %{pid: pid, player_id: player_id}}
+    start_game(player_id)
   end
 
   def handle_call({:find_game, player_id}, _from, %{pid: pid, player_id: player_id}) do
@@ -31,8 +29,18 @@ defmodule Rps.GameQueue do
   end
 
   def handle_call({:find_game, player_id}, _from, %{pid: pid, player_id: opponent_id}) do
-    Rps.Game.add_opponent(pid, player_id)
+    if RpsWeb.Presence.present?(pid, opponent_id) do
+      Rps.Game.add_opponent(pid, player_id)
 
-    {:reply, {:ok, pid, opponent_id}, %{pid: nil, player_id: nil}}
+      {:reply, {:ok, pid, opponent_id}, %{pid: nil, player_id: nil}}
+    else
+      start_game(player_id)
+    end
+  end
+
+  defp start_game(player_id) do
+    {:ok, pid} = Rps.Game.start_link(player_id)
+
+    {:reply, {:ok, pid}, %{pid: pid, player_id: player_id}}
   end
 end
