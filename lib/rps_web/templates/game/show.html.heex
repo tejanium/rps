@@ -53,15 +53,9 @@
         </div>
       <% else %>
         <div>
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="rock" title="rock">
-            🪨
-          </button>
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="paper" title="paper">
-            📃
-          </button>
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-6xl" phx-click="move" phx-value-move="scissor" title="scissor">
-            ✂️
-          </button>
+          <%= render "_move_button.html", value: :rock, emoji: "🪨" %>
+          <%= render "_move_button.html", value: :paper, emoji: "📃" %>
+          <%= render "_move_button.html", value: :scissor, emoji: "✂️" %>
         </div>
       <% end %>
     </section>
