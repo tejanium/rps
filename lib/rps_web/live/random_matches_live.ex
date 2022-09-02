@@ -64,9 +64,9 @@ defmodule RpsWeb.RandomMatchesLive do
   end
 
   def handle_event("move", %{"move" => move}, %{assigns: assigns} = socket) do
-    move = String.to_atom(move)
-
     if Process.alive?(assigns.pid) do
+      move = String.to_atom(move)
+
       {:ok, %{turns: turns}} = Rps.Game.move(assigns.pid, assigns.player_id, move)
 
       {:noreply, assign(socket, turns: turns)}
