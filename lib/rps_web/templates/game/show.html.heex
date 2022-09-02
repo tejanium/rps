@@ -5,29 +5,26 @@
 
   <%= if assigns[:turns] && @turns[map_size(@turns)].result == :done && map_size(@players) > 1 do %>
     <section id="previous-result" phx-hook="DelayedHide" class="space-y-16">
-      <section class="h-40 space-y-10">
-        <h1 class="text-3xl font-bold">Opponent</h1>
+      <%= render_section "_opponent_section.html" do %>
         <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded text-6xl" disabled>
           <%= picked(assigns[:turns], @opponent_id) %>
         </button>
-      </section>
+      <% end %>
 
-      <section class="h-40 space-y-10 flex items-center justify-center">
+      <%= render_section "_middle_section.html" do %>
         <h1 class="text-5xl font-bold align-middle inline-block"><%= humanize_result(@turns[map_size(@turns)].winner, @player_id, @opponent_id) %></h1>
-      </section>
+      <% end %>
 
-      <section class="h-40 space-y-10 sticky bottom-0">
-        <h1 class="text-3xl font-bold">You</h1>
+      <%= render_section "_you_section.html" do %>
         <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded text-6xl" disabled>
           <%= picked(assigns[:turns], @player_id) %>
         </button>
-      </section>
+      <% end %>
     </section>
   <% end %>
 
   <section id="current-game" class="space-y-16">
-    <section class="h-40 space-y-10">
-      <h1 class="text-3xl font-bold">Opponent</h1>
+    <%= render_section "_opponent_section.html" do %>
       <div>
         <%= if online?(@players, @opponent_id) do %>
           <%= if has_not_moved?(assigns[:turns], @player_id) && has_moved?(assigns[:turns], @opponent_id) do %>
@@ -39,12 +36,11 @@
             Opponent is offline!
         <% end %>
       </div>
-    </section>
+    <% end %>
 
-    <section class="h-40"></section>
+    <%= render_section "_middle_section.html", do: nil %>
 
-    <section class="h-40 space-y-10 sticky bottom-0">
-      <h1 class="text-3xl font-bold">You</h1>
+    <%= render_section "_you_section.html" do %>
       <%= if has_moved?(assigns[:turns], @player_id) && has_not_moved?(assigns[:turns], @opponent_id) do %>
         <div>
           <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded text-6xl" disabled>
@@ -58,6 +54,6 @@
           <%= render "_move_button.html", value: :scissor, emoji: "✂️" %>
         </div>
       <% end %>
-    </section>
+    <% end %>
   </section>
 </div>

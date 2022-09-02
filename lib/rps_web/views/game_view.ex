@@ -55,4 +55,8 @@ defmodule RpsWeb.GameView do
     |> Map.keys()
     |> Enum.member?(opponent_id)
   end
+
+  def render_section(partial, do: block) do
+    render RpsWeb.GameView, partial, content: block
+  end
 end
