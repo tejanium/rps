@@ -3,7 +3,7 @@
     <%= humanize_standing(assigns[:turns], @player_id, @opponent_id) %>
   </h1>
 
-  <%= if assigns[:turns] && @turns[map_size(@turns)].result == :done do %>
+  <%= if map_size(@players) > 1 && @turns && @turns[map_size(@turns)].result == :done do %>
     <section id="previous-result" phx-hook="DelayedHide" class="space-y-16">
       <section class="h-40 space-y-10">
         <h1 class="text-3xl font-bold">Opponent</h1>
