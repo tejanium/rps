@@ -14,6 +14,10 @@ defmodule Rps.Game do
     call_and_broadcast(pid, {:move, player_id, move}, :moved)
   end
 
+  def stop(pid) do
+    GenServer.cast(pid, {:stop})
+  end
+
   defp call_and_broadcast(pid, data, subject) do
     {:ok, state} = GenServer.call(pid, data)
 
@@ -54,6 +58,11 @@ defmodule Rps.Game do
       end
 
     {:reply, {:ok, new_state}, new_state}
+  end
+
+  @impl true
+  def handle_cast({:stop}, state) do
+    {:stop, :normal, state}
   end
 
   defp update_move(state, turn_number, player_id, move, status) do

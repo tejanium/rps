@@ -34,6 +34,8 @@ defmodule Rps.GameQueue do
 
       {:reply, {:ok, pid, opponent_id}, %{pid: nil, player_id: nil}}
     else
+      Rps.Game.stop(pid)
+
       start_game(player_id)
     end
   end
