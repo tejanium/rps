@@ -1,12 +1,16 @@
 defmodule Rps.Game do
   use GenServer
 
+  @time_limit 30
+  @interval 1_000
+
   # Client
   def start_link(home_player_id) do
     GenServer.start_link(__MODULE__, home_player_id)
   end
 
   def add_opponent(pid, player_id) do
+    start_timer(pid)
     call_and_broadcast(pid, {:add_opponent, player_id}, :opponent_added)
   end
 
@@ -16,6 +20,10 @@ defmodule Rps.Game do
 
   def stop(pid) do
     GenServer.cast(pid, {:stop})
+  end
+
+  def start_timer(pid) do
+    send(pid, {:tick})
   end
 
   defp call_and_broadcast(pid, data, subject) do
@@ -33,6 +41,7 @@ defmodule Rps.Game do
      %{
        home_player_id: home_player_id,
        away_player_id: nil,
+       time: @time_limit,
        turns: %{}
      }}
   end
@@ -53,11 +62,22 @@ defmodule Rps.Game do
           state
           |> update_move(turn_number, player_id, move, :done)
           |> update_winner(turn_number)
+          |> reset_timer()
+
         _ ->
           update_move(state, turn_number + 1, player_id, move, :wait)
       end
 
     {:reply, {:ok, new_state}, new_state}
+  end
+
+  @impl true
+  def handle_info({:tick}, %{time: time} = state) do
+    Process.send_after(self(), {:tick}, @interval)
+    Rps.GameBroadcaster.broadcast(self(), :timer_ticked, time)
+
+    new_state = update_state(state, [:time], time - 1)
+    {:noreply, new_state}
   end
 
   @impl true
@@ -91,5 +111,9 @@ defmodule Rps.Game do
 
   defp update_state(state, keys, value) do
     put_in(state, Enum.map(keys, &Access.key(&1, %{})), value)
+  end
+
+  def reset_timer(state) do
+    update_state(state, [:timer], @time_limit)
   end
 end

@@ -1,5 +1,4 @@
 defmodule RpsWeb.RandomMatchesLive do
-  # In Phoenix v1.6+ apps, the line below should be: use MyAppWeb, :live_view
   use RpsWeb, :live_view
 
   def render(%{opponent_id: _opponent_id} = assigns) do
@@ -53,6 +52,12 @@ defmodule RpsWeb.RandomMatchesLive do
 
   def handle_info({:moved, %{turns: turns}}, socket) do
     {:noreply, assign(socket, turns: turns)}
+  end
+
+  def handle_info({:timer_ticked, time}, socket) do
+    send_update RpsWeb.TimerComponent, id: "timer", time: time
+
+    {:noreply, socket}
   end
 
   def handle_info(%{event: "presence_diff", payload: diff}, %{assigns: assigns} = socket) do
