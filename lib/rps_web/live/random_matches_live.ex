@@ -32,18 +32,18 @@ defmodule RpsWeb.RandomMatchesLive do
 
   defp start_session(socket, player_id) do
     case Rps.GameQueue.find_game(player_id) do
-      {:ok, pid, opponent_id} ->
-        Rps.GameBroadcaster.subscribe(pid)
-        players = RpsWeb.Presence.track_presence(socket, pid)
+      {:ok, game_pid, opponent_id} ->
+        Rps.GameBroadcaster.subscribe(game_pid)
+        players = RpsWeb.Presence.track_presence(socket, game_pid)
 
         {:ok,
-         assign(socket, pid: pid, players: players, player_id: player_id, opponent_id: opponent_id)}
+         assign(socket, game_pid: game_pid, players: players, player_id: player_id, opponent_id: opponent_id)}
 
-      {:ok, pid} ->
-        Rps.GameBroadcaster.subscribe(pid)
-        players = RpsWeb.Presence.track_presence(socket, pid)
+      {:ok, game_pid} ->
+        Rps.GameBroadcaster.subscribe(game_pid)
+        players = RpsWeb.Presence.track_presence(socket, game_pid)
 
-        {:ok, assign(socket, pid: pid, players: players, player_id: player_id)}
+        {:ok, assign(socket, game_pid: game_pid, players: players, player_id: player_id)}
     end
   end
 
@@ -57,17 +57,17 @@ defmodule RpsWeb.RandomMatchesLive do
 
   def handle_info(%{event: "presence_diff", payload: diff}, %{assigns: assigns} = socket) do
     if map_size(diff.leaves) > 0 do
-      Rps.Game.stop(assigns.pid)
+      Rps.Game.stop(assigns.game_pid)
     end
 
     {:noreply, assign(socket, players: RpsWeb.Presence.players_from_diff(assigns.players, diff))}
   end
 
   def handle_event("move", %{"move" => move}, %{assigns: assigns} = socket) do
-    if Process.alive?(assigns.pid) do
+    if Process.alive?(assigns.game_pid) do
       move = String.to_atom(move)
 
-      {:ok, %{turns: turns}} = Rps.Game.move(assigns.pid, assigns.player_id, move)
+      {:ok, %{turns: turns}} = Rps.Game.move(assigns.game_pid, assigns.player_id, move)
 
       {:noreply, assign(socket, turns: turns)}
     else
