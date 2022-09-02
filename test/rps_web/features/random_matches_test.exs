@@ -27,11 +27,9 @@ defmodule RpsWeb.Features.RandomMatchesTest do
     user_2
     |> visit(@page)
     |> assert_has_all_buttons()
-    |> assert_text("playing against")
 
     user_1
     |> assert_has_all_buttons()
-    |> assert_text("playing against")
 
     # Start playing
     user_1
