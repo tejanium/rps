@@ -3,7 +3,7 @@ defmodule RpsWeb.Presence do
     otp_app: :rps,
     pubsub_server: Rps.PubSub
 
-  def handle_diff(players, diff) do
+  def players_from_diff(players, diff) do
     players
     |> handle_joins(diff.joins)
     |> handle_leaves(diff.leaves)
@@ -39,9 +39,14 @@ defmodule RpsWeb.Presence do
 
   def present?(pid, player_id) do
     pid
+    |> players()
+    |> Enum.member?(player_id)
+  end
+
+  def players(pid) do
+    pid
     |> topic()
     |> RpsWeb.Presence.list()
     |> Map.keys()
-    |> Enum.member?(player_id)
   end
 end
