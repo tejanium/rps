@@ -34,7 +34,7 @@ Hooks.DelayedHide = {
     setTimeout(() => {
       currentGame.style.display = "";
       this.el.style.display = "none";
-    }, 3000);
+    }, 2000);
   },
 };
 
