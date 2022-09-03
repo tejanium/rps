@@ -51,6 +51,7 @@ defmodule RpsWeb.GameView do
       :rock -> @rock
       :paper -> @paper
       :scissors -> @scissors
+      _ -> "timeout"
     end
   end
 
