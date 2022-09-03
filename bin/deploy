@@ -1,0 +1,2 @@
+git push
+git -c http.extraheader="GIGALIXIR-CLEAN: true" push gigalixir
