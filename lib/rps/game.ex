@@ -1,7 +1,7 @@
 defmodule Rps.Game do
   use GenServer
 
-  @time_limit 25
+  @time_limit 8
   @timer_shown 20
   @interval 1_000
 
@@ -80,7 +80,15 @@ defmodule Rps.Game do
       Rps.GameBroadcaster.broadcast(self(), :timer_ticked, time)
     end
 
-    new_state = update_state(state, [:time], time - 1)
+    new_state =
+      if time <= 0 do
+        state = timeout(state)
+        Rps.GameBroadcaster.broadcast(self(), :moved, state)
+        state
+      else
+        update_state(state, [:time], time - 1)
+      end
+
     {:noreply, new_state}
   end
 
@@ -119,5 +127,39 @@ defmodule Rps.Game do
 
   def reset_timer(state) do
     update_state(state, [:time], @time_limit)
+  end
+
+  def timeout(state) do
+    turn_number = map_size(state.turns)
+
+    case get_in(state, [:turns, turn_number, :result]) do
+      :wait ->
+        state
+        |> update_state(
+          [:turns, turn_number, :moves, state.home_player_id],
+          get_in(state, [:turns, turn_number, :moves, state.home_player_id]) || :timeout
+        )
+        |> update_state(
+          [:turns, turn_number, :moves, state.away_player_id],
+          get_in(state, [:turns, turn_number, :moves, state.away_player_id]) || :timeout
+        )
+        |> update_state([:turns, turn_number, :result], :done)
+        |> update_winner(turn_number)
+        |> reset_timer()
+
+      _ ->
+        state
+        |> update_state(
+          [:turns, turn_number + 1, :moves, state.home_player_id],
+          get_in(state, [:turns, turn_number + 1, :moves, state.home_player_id]) || :timeout
+        )
+        |> update_state(
+          [:turns, turn_number + 1, :moves, state.away_player_id],
+          get_in(state, [:turns, turn_number + 1, :moves, state.away_player_id]) || :timeout
+        )
+        |> update_state([:turns, turn_number + 1, :result], :done)
+        |> update_winner(turn_number + 1)
+        |> reset_timer()
+    end
   end
 end

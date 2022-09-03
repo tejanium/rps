@@ -3,7 +3,7 @@ defmodule RpsWeb.TimerComponent do
 
   def render(assigns) do
     ~H"""
-      <span id="time" phx-hook="TimeoutSubmit" phx-keyup="move" phx-value-move="timeout"><%= @time %></span>
+      <span id="time"><%= @time %></span>
     """
   end
 end
