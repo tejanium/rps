@@ -65,27 +65,27 @@ defmodule RpsWeb.Features.RandomMatchesTest do
     assert_text(user_2, "Win: 0, Lose: 1, Draw: 1")
   end
 
-  # @sessions 2
-  # feature "One user disconnected", %{sessions: [user_1, user_2]} do
-  #   on_exit(fn ->
-  #     Wallaby.end_session(user_1)
-  #     Wallaby.end_session(user_2)
-  #   end)
+  @sessions 2
+  feature "One user disconnected", %{sessions: [user_1, user_2]} do
+    on_exit(fn ->
+      Wallaby.end_session(user_1)
+      Wallaby.end_session(user_2)
+    end)
 
-  #   # Preparing the game
-  #   user_1
-  #   |> visit(@page)
+    # Preparing the game
+    user_1
+    |> visit(@page)
 
-  #   user_2
-  #   |> visit(@page)
-  #   |> assert_has_all_buttons()
+    user_2
+    |> visit(@page)
+    |> assert_has_all_buttons()
 
-  #   # One user leaving the page
-  #   user_1
-  #   |> assert_has_all_buttons()
-  #   |> visit("/")
+    # One user leaving the page
+    user_1
+    |> assert_has_all_buttons()
+    |> visit("/")
 
-  #   user_2
-  #   |> assert_text("The opponent has been disconnected, please refresh to start new game.")
-  # end
+    user_2
+    |> assert_text("The opponent has been disconnected, please refresh to start new game.")
+  end
 end
