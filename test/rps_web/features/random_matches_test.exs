@@ -86,7 +86,7 @@ defmodule RpsWeb.Features.RandomMatchesTest do
     |> visit("/")
 
     user_2
-    |> assert_text("The opponent has been disconnected, please refresh to start new game.")
+    |> assert_text("The opponent has been disconnected, please refresh to start a new game.")
   end
 
   @sessions 2
