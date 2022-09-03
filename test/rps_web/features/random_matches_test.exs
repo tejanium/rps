@@ -9,7 +9,7 @@ defmodule RpsWeb.Features.RandomMatchesTest do
     session
     |> assert_has(button("rock"))
     |> assert_has(button("paper"))
-    |> assert_has(button("scissor"))
+    |> assert_has(button("scissors"))
   end
 
   @sessions 2
@@ -40,7 +40,7 @@ defmodule RpsWeb.Features.RandomMatchesTest do
     |> assert_text("Opponent has picked their move.")
 
     user_2
-    |> click(button("scissor"))
+    |> click(button("scissors"))
 
     assert_text(user_1, "You win!")
     assert_text(user_2, "You lose!")

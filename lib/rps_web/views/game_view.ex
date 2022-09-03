@@ -43,7 +43,7 @@ defmodule RpsWeb.GameView do
     case turns[map_size(turns)].moves[player_id] do
       :rock -> "🪨"
       :paper -> "📃"
-      :scissor -> "✂️"
+      :scissors -> "✂️"
       _ -> :timeout
     end
   end

@@ -9,8 +9,8 @@ defmodule Rps.EngineTest do
     assert Rps.Engine.calculate(:rock, :paper) == :paper
   end
 
-  test "rock vs scissor" do
-    assert Rps.Engine.calculate(:rock, :scissor) == :rock
+  test "rock vs scissors" do
+    assert Rps.Engine.calculate(:rock, :scissors) == :rock
   end
 
   test "paper vs rock" do
@@ -21,20 +21,20 @@ defmodule Rps.EngineTest do
     assert Rps.Engine.calculate(:paper, :paper) == :draw
   end
 
-  test "paper vs scissor" do
-    assert Rps.Engine.calculate(:paper, :scissor) == :scissor
+  test "paper vs scissors" do
+    assert Rps.Engine.calculate(:paper, :scissors) == :scissors
   end
 
-  test "scissor vs rock" do
-    assert Rps.Engine.calculate(:scissor, :rock) == :rock
+  test "scissors vs rock" do
+    assert Rps.Engine.calculate(:scissors, :rock) == :rock
   end
 
-  test "scissor vs paper" do
-    assert Rps.Engine.calculate(:scissor, :paper) == :scissor
+  test "scissors vs paper" do
+    assert Rps.Engine.calculate(:scissors, :paper) == :scissors
   end
 
-  test "scissor vs scissor" do
-    assert Rps.Engine.calculate(:scissor, :scissor) == :draw
+  test "scissors vs scissors" do
+    assert Rps.Engine.calculate(:scissors, :scissors) == :draw
   end
 
   test "timeout vs timeout" do
@@ -49,8 +49,8 @@ defmodule Rps.EngineTest do
     assert Rps.Engine.calculate(:paper, :timeout) == :paper
   end
 
-  test "scissor vs timeout" do
-    assert Rps.Engine.calculate(:scissor, :timeout) == :scissor
+  test "scissors vs timeout" do
+    assert Rps.Engine.calculate(:scissors, :timeout) == :scissors
   end
 
   test "timeout vs rock" do
@@ -61,7 +61,7 @@ defmodule Rps.EngineTest do
     assert Rps.Engine.calculate(:timeout, :paper) == :paper
   end
 
-  test "timeout vs scissor" do
-    assert Rps.Engine.calculate(:timeout, :scissor) == :scissor
+  test "timeout vs scissors" do
+    assert Rps.Engine.calculate(:timeout, :scissors) == :scissors
   end
 end
