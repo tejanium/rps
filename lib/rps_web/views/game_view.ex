@@ -44,6 +44,7 @@ defmodule RpsWeb.GameView do
       :rock -> "🪨"
       :paper -> "📃"
       :scissor -> "✂️"
+      _ -> :timeout
     end
   end
 
@@ -57,6 +58,6 @@ defmodule RpsWeb.GameView do
   end
 
   def render_section(partial, do: block) do
-    render RpsWeb.GameView, partial, content: block
+    render(RpsWeb.GameView, partial, content: block)
   end
 end

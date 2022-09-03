@@ -38,6 +38,14 @@ Hooks.DelayedHide = {
   },
 };
 
+Hooks.TimeoutSubmit = {
+  updated() {
+    if (this.el.textContent === "0") {
+      this.el.dispatchEvent(new Event("keyup", { bubbles: true }));
+    }
+  },
+};
+
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
   .getAttribute("content");

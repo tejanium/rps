@@ -1,11 +1,6 @@
 defmodule Rps.EngineTest do
   use ExUnit.Case, async: true
 
-  test "nil" do
-    assert Rps.Engine.calculate(:rock, nil) == nil
-    assert Rps.Engine.calculate(nil, :rock) == nil
-  end
-
   test "rock vs rock" do
     assert Rps.Engine.calculate(:rock, :rock) == :draw
   end
@@ -43,7 +38,7 @@ defmodule Rps.EngineTest do
   end
 
   test "timeout vs timeout" do
-    assert Rps.Engine.calculate(:timeout, :timeout) == :timeout
+    assert Rps.Engine.calculate(:timeout, :timeout) == :draw
   end
 
   test "rock vs timeout" do

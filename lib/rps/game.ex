@@ -1,7 +1,7 @@
 defmodule Rps.Game do
   use GenServer
 
-  @time_limit 30
+  @time_limit 25
   @timer_shown 20
   @interval 1_000
 
@@ -76,7 +76,7 @@ defmodule Rps.Game do
   def handle_info({:tick}, %{time: time} = state) do
     Process.send_after(self(), {:tick}, @interval)
 
-    if time <= @timer_shown do
+    if time <= @timer_shown && time >= 0 do
       Rps.GameBroadcaster.broadcast(self(), :timer_ticked, time)
     end
 
@@ -109,7 +109,7 @@ defmodule Rps.Game do
     case Rps.Engine.calculate(home_player_move, away_player_move) do
       ^home_player_move -> home_player_id
       ^away_player_move -> away_player_id
-      :draw -> :draw
+      _ -> :draw
     end
   end
 

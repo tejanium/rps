@@ -5,9 +5,7 @@ defmodule Rps.Engine do
     scissor:  3
   ]
 
-  def calculate(_, nil), do: nil
-  def calculate(nil, _), do: nil
-  def calculate(:timeout, :timeout), do: :timeout
+  def calculate(:timeout, :timeout), do: :draw
   def calculate(:timeout, right), do: right
   def calculate(left, :timeout), do: left
   def calculate(left, right) do
