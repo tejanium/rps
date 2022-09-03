@@ -25,7 +25,7 @@
 
   <section id="current-game" class="space-y-16">
     <%= render_section "_opponent_section.html" do %>
-      <div>
+      <div class="p-6">
         <%= if online?(@players, @opponent_id) do %>
           <%= if has_not_moved?(assigns[:turns], @player_id) && has_moved?(assigns[:turns], @opponent_id) do %>
             Opponent has picked their move.
