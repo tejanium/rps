@@ -50,13 +50,14 @@ defmodule RpsWeb.RandomMatchesLive do
     {:noreply, assign(socket, opponent_id: away_player_id)}
   end
 
-  def handle_info({:moved, %{turns: turns}}, socket) do
+  def handle_info({:moved, %{turns: turns, time: time}}, socket) do
     show_previous_result = turns[map_size(turns)].result == :done
 
     if show_previous_result do
       Process.send_after(self(), {:next_game, %{turns: turns}}, 2000)
     end
 
+    send_update RpsWeb.TimerComponent, id: "timer", time: time
     {:noreply, assign(socket, turns: turns, show_previous_result: show_previous_result)}
   end
 

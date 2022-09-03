@@ -35,7 +35,11 @@
         </div>
       <% end %>
 
-      <%= render_section "_middle_section.html", do: nil %>
+      <section class="h-40 space-y-10 flex items-center justify-center">
+        <h1 class="text-5xl font-bold">
+          <.live_component module={RpsWeb.TimerComponent} id="timer" time={assigns[:time]} />
+        </h1>
+      </section>
 
       <%= render_section "_you_section.html" do %>
         <%= if has_moved?(assigns[:turns], @player_id) && has_not_moved?(assigns[:turns], @opponent_id) do %>
@@ -51,12 +55,6 @@
             <%= render "_move_button.html", value: :scissor, emoji: "✂️" %>
           </div>
         <% end %>
-      <% end %>
-
-      <%= unless has_moved?(assigns[:turns], @player_id) && has_not_moved?(assigns[:turns], @opponent_id) do %>
-        <h1 class="text-2xl font-bold">
-          <.live_component module={RpsWeb.TimerComponent} id="timer" time={assigns[:time]} />
-        </h1>
       <% end %>
     <% end %>
   </section>
