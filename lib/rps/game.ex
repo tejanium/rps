@@ -61,12 +61,15 @@ defmodule Rps.Game do
       case get_in(state, [:turns, turn_number, :result]) do
         :wait ->
           state
-          |> update_move(turn_number, player_id, move, :done)
+          |> update_move(turn_number, player_id, move)
+          |> update_result(turn_number, :done)
           |> update_winner(turn_number)
           |> reset_timer()
 
         _ ->
-          update_move(state, turn_number + 1, player_id, move, :wait)
+          state
+          |> update_move(turn_number + 1, player_id, move)
+          |> update_result(turn_number + 1, :wait)
       end
 
     {:reply, {:ok, new_state}, new_state}
@@ -97,17 +100,25 @@ defmodule Rps.Game do
     {:stop, :normal, state}
   end
 
-  defp update_move(state, turn_number, player_id, move, status) do
-    state
-    |> update_state([:turns, turn_number, :moves, player_id], move)
-    |> update_state([:turns, turn_number, :result], status)
+  defp update_move(state, turn_number, player_id, move) do
+    move = get_in(state, [:turns, turn_number, :moves, player_id]) || move
+
+    update_state(state, [:turns, turn_number, :moves, player_id], move)
   end
 
-  def update_winner(state, turn_number) do
+  defp update_result(state, turn_number, result) do
+    update_state(state, [:turns, turn_number, :result], result)
+  end
+
+  defp update_winner(state, turn_number) do
     moves = state.turns[turn_number].moves
     winner = calculate_winner(moves, state.home_player_id, state.away_player_id)
 
     update_state(state, [:turns, turn_number, :winner], winner)
+  end
+
+  defp update_state(state, keys, value) do
+    put_in(state, Enum.map(keys, &Access.key(&1, %{})), value)
   end
 
   defp calculate_winner(moves, home_player_id, away_player_id) do
@@ -121,45 +132,25 @@ defmodule Rps.Game do
     end
   end
 
-  defp update_state(state, keys, value) do
-    put_in(state, Enum.map(keys, &Access.key(&1, %{})), value)
-  end
-
-  def reset_timer(state) do
-    update_state(state, [:time], @time_limit)
-  end
-
-  def timeout(state) do
+  defp timeout(state) do
     turn_number = map_size(state.turns)
 
     case get_in(state, [:turns, turn_number, :result]) do
-      :wait ->
-        state
-        |> update_state(
-          [:turns, turn_number, :moves, state.home_player_id],
-          get_in(state, [:turns, turn_number, :moves, state.home_player_id]) || :timeout
-        )
-        |> update_state(
-          [:turns, turn_number, :moves, state.away_player_id],
-          get_in(state, [:turns, turn_number, :moves, state.away_player_id]) || :timeout
-        )
-        |> update_state([:turns, turn_number, :result], :done)
-        |> update_winner(turn_number)
-        |> reset_timer()
-
-      _ ->
-        state
-        |> update_state(
-          [:turns, turn_number + 1, :moves, state.home_player_id],
-          get_in(state, [:turns, turn_number + 1, :moves, state.home_player_id]) || :timeout
-        )
-        |> update_state(
-          [:turns, turn_number + 1, :moves, state.away_player_id],
-          get_in(state, [:turns, turn_number + 1, :moves, state.away_player_id]) || :timeout
-        )
-        |> update_state([:turns, turn_number + 1, :result], :done)
-        |> update_winner(turn_number + 1)
-        |> reset_timer()
+      :wait -> timeout_move(state, turn_number)
+      _ -> timeout_move(state, turn_number + 1)
     end
+  end
+
+  defp timeout_move(state, turn_number) do
+    state
+    |> update_move(turn_number, state.home_player_id, :timeout)
+    |> update_move(turn_number, state.away_player_id, :timeout)
+    |> update_result(turn_number, :done)
+    |> update_winner(turn_number)
+    |> reset_timer()
+  end
+
+  defp reset_timer(state) do
+    update_state(state, [:time], @time_limit)
   end
 end
