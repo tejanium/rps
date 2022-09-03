@@ -3,7 +3,7 @@ defmodule RpsWeb.TimerComponent do
 
   def render(assigns) do
     ~H"""
-      <span id="time"><%= @time %></span>
+      <span id="time"><%= if @time <= 20, do: @time %></span>
     """
   end
 end
