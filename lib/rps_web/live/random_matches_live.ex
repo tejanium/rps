@@ -51,7 +51,7 @@ defmodule RpsWeb.RandomMatchesLive do
   end
 
   def handle_info({:moved, %{turns: turns}}, socket) do
-    show_previous_result = turns[map_size(turns)].result == :done && map_size(socket.assigns.players) > 1
+    show_previous_result = turns[map_size(turns)].result == :done
 
     if show_previous_result do
       Process.send_after(self(), {:next_game, %{turns: turns}}, 2000)

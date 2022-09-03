@@ -1,7 +1,7 @@
 defmodule Rps.Game do
   use GenServer
 
-  @time_limit Application.get_env(:rps, :time_limit, 7)
+  @time_limit Application.get_env(:rps, :time_limit, 25)
   @timer_shown @time_limit - 5
   @timer_interval 1_000
 
