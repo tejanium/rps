@@ -1,5 +1,8 @@
 defmodule RpsWeb.GameView do
   use RpsWeb, :view
+  @rock "✊🏻"
+  @paper "✋🏻"
+  @scissors"✌🏻"
 
   def humanize_standing(nil, _, _), do: "Win: 0, Lose: 0, Draw: 0"
 
@@ -40,11 +43,14 @@ defmodule RpsWeb.GameView do
   end
 
   def picked(turns, player_id) do
-    case turns[map_size(turns)].moves[player_id] do
-      :rock -> "🪨"
-      :paper -> "📃"
-      :scissors -> "✂️"
-      _ -> :timeout
+    turns[map_size(turns)].moves[player_id]
+  end
+
+  def emoji(symbol) do
+    case symbol do
+      :rock -> @rock
+      :paper -> @paper
+      :scissors -> @scissors
     end
   end
 

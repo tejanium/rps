@@ -6,9 +6,7 @@
   <section class="space-y-16">
     <%= if assigns[:show_previous_result] do %>
       <%= render_section "_opponent_section.html" do %>
-        <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded text-6xl" disabled>
-          <%= picked(assigns[:turns], @opponent_id) %>
-        </button>
+        <%= render "_move_button.html", value: picked(assigns[:turns], @opponent_id), disabled: true %>
       <% end %>
 
       <%= render_section "_middle_section.html" do %>
@@ -16,9 +14,7 @@
       <% end %>
 
       <%= render_section "_you_section.html" do %>
-        <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded text-6xl" disabled>
-          <%= picked(assigns[:turns], @player_id) %>
-        </button>
+        <%= render "_move_button.html", value: picked(assigns[:turns], @player_id), disabled: true %>
       <% end %>
     <% else %>
       <%= render_section "_opponent_section.html" do %>
@@ -44,15 +40,13 @@
       <%= render_section "_you_section.html" do %>
         <%= if has_moved?(assigns[:turns], @player_id) && has_not_moved?(assigns[:turns], @opponent_id) do %>
           <div>
-            <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded text-6xl" disabled>
-              <%= picked(assigns[:turns], @player_id) %>
-            </button>
+            <%= render "_move_button.html", value: picked(assigns[:turns], @player_id), disabled: true %>
           </div>
         <% else %>
           <div>
-            <%= render "_move_button.html", value: :rock, emoji: "🪨" %>
-            <%= render "_move_button.html", value: :paper, emoji: "📃" %>
-            <%= render "_move_button.html", value: :scissors, emoji: "✂️" %>
+            <%= render "_move_button.html", value: :rock, disabled: false %>
+            <%= render "_move_button.html", value: :paper, disabled: false %>
+            <%= render "_move_button.html", value: :scissors, disabled: false %>
           </div>
         <% end %>
       <% end %>
