@@ -57,7 +57,7 @@
     <% end %>
   </section>
 
-  <%= if has_not_moved?(assigns[:turns], @player_id) do %>
+  <%= unless has_moved?(assigns[:turns], @player_id) && has_not_moved?(assigns[:turns], @opponent_id) do %>
     <h1 class="m-6 text-2xl font-bold">
       <.live_component module={RpsWeb.TimerComponent} id="timer" time={assigns[:time]} />
     </h1>

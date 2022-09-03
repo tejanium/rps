@@ -2,6 +2,7 @@ defmodule Rps.Game do
   use GenServer
 
   @time_limit 30
+  @timer_shown 20
   @interval 1_000
 
   # Client
@@ -74,7 +75,10 @@ defmodule Rps.Game do
   @impl true
   def handle_info({:tick}, %{time: time} = state) do
     Process.send_after(self(), {:tick}, @interval)
-    Rps.GameBroadcaster.broadcast(self(), :timer_ticked, time)
+
+    if time <= @timer_shown do
+      Rps.GameBroadcaster.broadcast(self(), :timer_ticked, time)
+    end
 
     new_state = update_state(state, [:time], time - 1)
     {:noreply, new_state}
@@ -114,6 +118,6 @@ defmodule Rps.Game do
   end
 
   def reset_timer(state) do
-    update_state(state, [:timer], @time_limit)
+    update_state(state, [:time], @time_limit)
   end
 end
