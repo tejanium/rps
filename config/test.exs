@@ -7,6 +7,8 @@ config :rps, RpsWeb.Endpoint,
   secret_key_base: "BG9WSOq8vj7BWhXI6M+hoPmCLIZ+RmdpGuRp3ussjQr72I86M9tQnJpLLEcakYCw",
   server: true
 
+config :rps, time_limit: 2
+
 # Print only warnings and errors during test
 config :logger, level: :warn
 

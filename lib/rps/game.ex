@@ -1,9 +1,9 @@
 defmodule Rps.Game do
   use GenServer
 
-  @time_limit 8
+  @time_limit Application.get_env(:rps, :time_limit, 25)
   @timer_shown @time_limit - 5
-  @interval 1_000
+  @timer_interval 1_000
 
   # Client
   def start_link(home_player_id) do
@@ -74,7 +74,7 @@ defmodule Rps.Game do
 
   @impl true
   def handle_info({:tick}, %{time: time} = state) do
-    Process.send_after(self(), {:tick}, @interval)
+    Process.send_after(self(), {:tick}, @timer_interval)
 
     if time <= @timer_shown && time >= 0 do
       Rps.GameBroadcaster.broadcast(self(), :timer_ticked, time)
